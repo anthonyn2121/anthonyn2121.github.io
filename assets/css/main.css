@@ -1,9 +1,16 @@
 @import url(fontawesome-all.min.css);
 
+<<<<<<< HEAD
 /*
 	Hyperspace by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+=======
+/*
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+>>>>>>> 86ac9a6b6c8b68eeb46ec40211d4553bdd452934
 */
 
 html, body, div, span, applet, object,
@@ -98,7 +105,11 @@ input, select, textarea {
 	}
 
 	body {
+<<<<<<< HEAD
+		background: #413957;
+=======
 		background: #312450;
+>>>>>>> 86ac9a6b6c8b68eeb46ec40211d4553bdd452934
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
