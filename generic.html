@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Generic - Hyperspace by HTML5 UP</title>
+		<title>Projects - By Anthony</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -16,12 +16,12 @@
 
 		<!-- Header -->
 			<header id="header">
-				<a href="index.html" class="title">Hyperspace</a>
+				<a href="index.html" class="title">Projects</a>
 				<nav>
 					<ul>
 						<li><a href="index.html">Home</a></li>
-						<li><a href="generic.html" class="active">Generic</a></li>
-						<li><a href="elements.html">Elements</a></li>
+						<li><a href="generic.html" class="active">Projects</a></li>
+						<li><a href="elements.html">Resume and CV</a></li>
 					</ul>
 				</nav>
 			</header>
@@ -32,13 +32,70 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
-							<h1 class="major">A Generic Page</h1>
+							<h1 class="major">My Projects - Page Not Done Yet!</h1>
 							<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>
-							<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique.</p>
-							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
-						</div>
+							<p>Here is my collection of projects that have accumulated from over the years! These are mainly from graduate school and independent studies that supplement the materials in class. </p>
+							<p> 
+								Here is a massive list of all of my projects with links to make it easier to skip to specific projects. If I can find an easier way to organize my projects, I'll update the page. 
+								In the mean time, this will have to do
+							</p>
+							<table style="width:80%"> <!-- Create table -->
+								<tr> <!-- Create a row -->
+									<!-- Elements in one row -->
+									<td><a href="#CoDrone">CoDrone</a></td>
+									<td><a href="#RRT">RRT</a></td>
+									<td><a href="#Waldo">Waldo Robot</a></td>
+									<td><a href="#Potential">Vector Field</a></td>
+								</tr>
+							</table>
+							<!--<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>-->
+						<!--</div>
 					</section>
-
+					<section id="main" class="wrapper"> 
+						<div class="inner">-->
+							<h2><a id="CoDrone">CoDrone</a></h2>
+								<p> 
+									As a part of my Introduction to Robotics class I took at Penn State, we were given a CoDrone and were tasked to program the quadrotor 
+									to fly a prespecified route. This particular quadrotor is compatible with the Arduino IDE and I took advantage of this to obtain odometry data from the flying tests. 
+									This project was not too difficult, as I had previous programming experience with C++ in the Arduino IDE. My drone completed the route with no major difficulties. 	
+								</p>
+								<p> 
+									This project further gain experience in developing robots and this is my first experience in motion planning.
+								</p>
+						<!--</div>-->
+							<h2><a id="RRT">RRT</a></h2>
+								<p>
+									This is my first project in graduate school. We previously studied probabilistic roadmap planners that create a path from starting
+									configuration to end configuration by randomly selecting configurations until the path is complete. However, for this lab obstacles were introduced to our robot
+									and we had to come up with a solution to work around the obstacles. The goal of this assignment was to write our own code for the RRT motion planner and then test it on
+									the Lynx robot, a 6DOF robot arm. For future assignments for this course, we will be using the same Lynx robot. To overcome the aforementioned obstacles in our free space,
+									we assume known obstacle positions and create a buffer zone around the obstacles's edges in free space. 
+									If our planner randomly sampled a configuration within the buffer zone, our controller would 'discard' the configuration and try again. 
+								</p>
+								<p>
+									The robot was first simulated on MATLAB to ensure that the lynx robot followed a path we expected given the randomly sampled configuration and as well as guaranteed safety to 
+									other students and the robot itself. We then uploaded our code to the actual robot to compare the similarities in  performance between the actual robot and the simulation. 
+								</p>
+							<h2><a id="Waldo"> Waldo Robot</a></h2>
+								<p> 
+									This assignment was for my mechatronics course and the goal of this project was very open ended, I was tasked to create a master-slave system. I was personally inspired by the 
+									ISS Remote Manipulator system that consists of a robotic arm to perform station maintenance and perform "costmic catches", as stated by NASA. To complete this project I created two 
+									3DOF manipulators. One would be created with potentiometers as the joints, where I would be able to manipulate my arm myself. This robot would act as the 'master' of the system.
+									The other manipulator would be created with servos, acting as the 'slave'. The brains of this project is the Teensy 2.0.  
+								</p>
+								<p>
+									To interface the Teensy with the potentiometers, the code I wrote reads the potentiometer values sequentially directly from the ADC ports of the microcontroller. 
+									This allowed me to get consistent readings from all of the potentiometers, with very little deviations in readings. With these ADC readings, I send a PWM signal to the 
+									servos in the slave system that is proportional to the position value of the potentiometers
+								</p>
+							<h2><a id="Potential"> Potential Field Planner</a> </h2>
+								<p>
+									In this section, I will write a painfully detailed description of my potential field planner because I think this is one of the most impressive projects I have ever done and I am super proud of it! 
+									And I would also love to help out any readers implement this algorithm on their own robot, as this may be the first real-time planner that young roboticists are exposed to. Feel free to skip to the 
+									pictures/videos below to see the performance of the robot, as the goal is very similar to the RRT planner I created before.   
+								</p>
+					</section>
+					
 			</div>
 
 		<!-- Footer -->
@@ -58,6 +115,8 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+			<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 	</body>
 </html>

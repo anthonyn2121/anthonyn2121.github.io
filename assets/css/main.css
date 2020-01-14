@@ -1,16 +1,10 @@
 @import url(fontawesome-all.min.css);
 
-<<<<<<< HEAD
+
 /*
 	Hyperspace by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-=======
-/*
-	Hyperspace by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
->>>>>>> 86ac9a6b6c8b68eeb46ec40211d4553bdd452934
 */
 
 html, body, div, span, applet, object,
@@ -105,12 +99,8 @@ input, select, textarea {
 	}
 
 	body {
-<<<<<<< HEAD
-		background: #413957;
-=======
-		background: #312450;
->>>>>>> 86ac9a6b6c8b68eeb46ec40211d4553bdd452934
-	}
+		background: #343c61;
+	
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
 			-moz-animation: none !important;
@@ -122,6 +112,7 @@ input, select, textarea {
 			-ms-transition: none !important;
 			transition: none !important;
 		}
+	}
 
 /* Type */
 
@@ -2000,7 +1991,7 @@ input, select, textarea {
 		flex-wrap: wrap;
 		border-radius: 0.25em;
 		border: solid 1px rgba(255, 255, 255, 0.15);
-		background: rgba(255, 255, 255, 0.05);
+		--background: rgba(255, 255, 255, 0.05);
 		margin: 0 0 2em 0;
 	}
 
@@ -2344,7 +2335,7 @@ input, select, textarea {
 		textarea:invalid {
 			box-shadow: none;
 		}
-
+		image
 		input[type="text"]:focus,
 		input[type="password"]:focus,
 		input[type="email"]:focus,
@@ -2536,7 +2527,7 @@ input, select, textarea {
 			display: block;
 			background: #ffffff;
 			border-radius: 100%;
-			color: #312450;
+			color: #850a0a;
 			text-align: center;
 			line-height: 2.5em;
 			margin: 0 0 1.3em 0;
@@ -2555,11 +2546,11 @@ input, select, textarea {
 				}
 
 				.wrapper.style2 .icon.major:before {
-					color: #5052b5;
+					color: #850a0a;
 				}
 
 				.wrapper.style2-alt .icon.major:before {
-					color: #3e4094;
+					color: #850a0a;
 				}
 
 				.wrapper.style3 .icon.major:before {
@@ -2585,7 +2576,7 @@ input, select, textarea {
 		}
 
 		.image.left, .image.right {
-			max-width: 40%;
+			max-width: 50%;
 		}
 
 			.image.left img, .image.right img {
@@ -3251,15 +3242,15 @@ input, select, textarea {
 		}
 
 		.wrapper.style1 {
-			background-color: #5e42a6;
+			background-color: #850a0a;
 		}
 
 		.wrapper.style1-alt {
-			background-color: #493382;
+			background-color: #850a0a;
 		}
 
 		.wrapper.style2 {
-			background-color: #5052b5;
+			background-color: #30445e;
 		}
 
 		.wrapper.style2-alt {
@@ -3267,7 +3258,7 @@ input, select, textarea {
 		}
 
 		.wrapper.style3 {
-			background-color: #b74e91;
+			background-color: #b75a4e;
 		}
 
 		.wrapper.style3-alt {
@@ -3535,7 +3526,7 @@ input, select, textarea {
 
 	#sidebar {
 		padding: 2.5em 2.5em 0.5em 2.5em ;
-		background: #312450;
+		background: #111769;
 		cursor: default;
 		height: 100vh;
 		left: 0;
@@ -3772,7 +3763,7 @@ input, select, textarea {
 			}
 
 			#sidebar nav a:before {
-				background: #3c2c62;
+				background: #e4e2e9;
 			}
 
 			#sidebar nav a:after {
