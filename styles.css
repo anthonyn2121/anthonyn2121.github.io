@@ -26,3 +26,17 @@ footer {
     background-color: #333;
     color: #fff;
 }
+
+/* .portfolio-photo {
+    display: inline-flexbox;
+    max-width: 300px;
+    height:auto;
+} */
+.portfolio-photo {
+    float: left;
+    margin: 0 1em 1em 0;
+    max-width: 140px;
+    height: auto;
+    /* border-radius: 50%; */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
