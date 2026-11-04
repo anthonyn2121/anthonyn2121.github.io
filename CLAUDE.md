@@ -42,9 +42,16 @@ The home page is an ASCII aircraft-carrier flight deck (Three.js, after the `asc
 in `CarrierApp.tsx`, and in `scene/` the procedural carrier, the F-35Cs (`jet.ts`), the Group 1
 quadcopter and its pad (`quad.ts`), the sea, flight ops (`ops.ts`), and the glyph and tilt-shift passes
 (`post.ts`). Metres, +x toward the bow, +z to starboard. Everything is procedural, with no downloaded
-assets. A project with `vehicle: "quadcopter"` in `profile.ts` gets the quadcopter instead of a jet. In
-dev, `/?fps` adds a frame-rate and quality-level readout; the scene steps down quality on its own if
-frames stay slow.
+assets. The aircraft on deck are the ASTRUM projects with `deck` set in `src/data/astrum.ts`
+(`vehicle: "quadcopter"` gets the quadcopter). In dev, `/?fps` adds a frame-rate and quality-level
+readout; the scene steps down quality on its own if frames stay slow.
+
+The Projects section opens with the ASTRUM case study (`src/components/astrum/`, content in
+`src/data/astrum.ts`): architecture diagram, tick stepper, a split-S replay with flight-data strips,
+speed chart, and a card per project built on ASTRUM, whose "Uses" chips light up the diagram
+through `archHighlight` (`highlight.ts`). Replays and charts are JSON in `public/projects/astrum/`,
+built by `node scripts/build-astrum-assets.mjs <path to astrum>`; the multi-MB recordings stay in
+the ASTRUM repo. Copy starting "Placeholder:" and files with a `filler` note are filler to replace.
 
 - `src/data/`: all site content (`profile.ts`, `skies.ts`, `myths.ts`, `figures.ts`).
   Components read from here. Put new copy in these files, not in components.

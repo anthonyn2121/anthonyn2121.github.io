@@ -14,6 +14,8 @@ import { onSkiesLinkClick, SKIES_HREF } from "../lib/pages";
 import { ThemeProvider, useTheme } from "../lib/theme";
 import { GROUPS, groupRange } from "../lib/uas";
 import { createCarrierScene, type CarrierScene, type DeckState, type Phase } from "./scene";
+import { astrum } from "../data/astrum";
+import { VisualFor } from "../components/astrum/AstrumCaseStudy";
 
 /*
  * The home page as a carrier flight deck. The ASCII diorama is the hero; each
@@ -22,8 +24,11 @@ import { createCarrierScene, type CarrierScene, type DeckState, type Phase } fro
  * over the deck. Its mission card is open while it flies.
  */
 
-/** The deck has four project spots; further projects still appear in the Projects section. */
-const DECK = profile.projects.slice(0, 4).map((p, i) => ({ ...p, vehicle: p.vehicle ?? ("jet" as const), modex: `1${String(i + 1).padStart(2, "0")}` }));
+/** The deck carries the ASTRUM projects marked for it; four spots fit. Every project still appears in the Projects section. */
+const DECK = astrum.projects
+  .filter((p) => p.deck)
+  .slice(0, 4)
+  .map((p, i) => ({ ...p, vehicle: p.deck!.vehicle, modex: `1${String(i + 1).padStart(2, "0")}` }));
 type DeckProject = (typeof DECK)[number];
 
 /** The hull number on the bow comes from the digits in your callsign. */
@@ -434,10 +439,14 @@ function MissionCard({ project: p, phase, onClose }: { project: DeckProject; pha
         {p.name}
       </h2>
       <p className="mission__tagline">{p.tagline}</p>
-      <p>{p.description}</p>
+      <p className="mission__built">Built on ASTRUM · {p.status}</p>
+      <p>{p.approach}</p>
+      {p.visual && <VisualFor visual={p.visual} compact />}
       <ul className="mission__highlights">
         {p.highlights.map((h, i) => (
-          <li key={i}>{h}</li>
+          <li key={i} className={h.startsWith("Placeholder:") ? "placeholder" : undefined}>
+            {h}
+          </li>
         ))}
       </ul>
       <dl className="mission__meta">
@@ -445,23 +454,20 @@ function MissionCard({ project: p, phase, onClose }: { project: DeckProject; pha
           <dt>Built with</dt>
           <dd>{p.tech.join(", ")}</dd>
         </div>
-        <div>
-          <dt>Platforms</dt>
-          <dd>{groupRange(p.groups)}</dd>
-        </div>
+        {p.groups && (
+          <div>
+            <dt>Platforms</dt>
+            <dd>{groupRange(p.groups)}</dd>
+          </div>
+        )}
       </dl>
       <p className="mission__links">
-        {p.repo && (
-          <a className="btn" href={p.repo} target="_blank" rel="noopener">
+        {astrum.repo && (
+          <a className="btn" href={astrum.repo} target="_blank" rel="noopener">
             View code
           </a>
         )}
-        {p.demo && (
-          <a className="btn btn--ghost" href={p.demo} target="_blank" rel="noopener">
-            Live demo
-          </a>
-        )}
-        <a className="btn btn--ghost" href={`#project-${p.slug}`}>
+        <a className="btn btn--ghost" href={`#astrum-${p.slug}`}>
           Full write-up
         </a>
       </p>

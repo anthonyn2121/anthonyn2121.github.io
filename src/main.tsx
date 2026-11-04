@@ -7,6 +7,7 @@ import "@fontsource/b612-mono/700.css";
 import "./styles/base.css";
 import "./styles/sections.css";
 import "./styles/carrier.css";
+import "./styles/astrum.css";
 import { CarrierApp } from "./carrier/CarrierApp";
 
 createRoot(document.getElementById("root")!).render(

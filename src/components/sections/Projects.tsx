@@ -1,11 +1,18 @@
 import { profile } from "../../data/profile";
 import { groupRange } from "../../lib/uas";
+import { AstrumCaseStudy } from "../astrum/AstrumCaseStudy";
 import { GitHubRepos } from "./GitHubRepos";
 import { Section } from "./Section";
 
 export function Projects() {
   return (
-    <Section id="projects" title="Projects" intro="Personal and open-source work. Most of my professional work isn't public.">
+    <Section
+      id="projects"
+      title="Projects"
+      intro="ASTRUM, the flight simulation platform most of my personal work runs on, and what I've built with it. Then other personal and open-source work; most of my professional work isn't public."
+    >
+      <AstrumCaseStudy />
+      <h3 className="projects__more">Other work</h3>
       <div className="projects">
         {profile.projects.map((p) => (
           <article key={p.slug} id={`project-${p.slug}`} className="project">

@@ -1,0 +1,713 @@
+/* ─── ASTRUM case study (top of the Projects section) ─────────────────── */
+
+.astrum {
+  display: grid;
+  gap: 56px;
+  margin-bottom: 72px;
+}
+
+.astrum__eyebrow {
+  margin: 0;
+  font: 700 var(--fs-12) / 1.4 var(--font-mono);
+  color: var(--select);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.astrum__name {
+  margin: 4px 0 0;
+  font: 700 var(--fs-48) / 1 var(--font-mono);
+  letter-spacing: 0.06em;
+}
+
+.astrum__tagline {
+  margin: 6px 0 18px;
+  font-size: var(--fs-21);
+  color: var(--ink-dim);
+}
+
+.astrum__head p {
+  max-width: 68ch;
+}
+
+.astrum__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  padding: 0;
+  margin: 22px 0;
+  list-style: none;
+}
+
+.astrum__stats li {
+  padding: 12px 14px;
+  font-size: var(--fs-14);
+  line-height: 1.4;
+  color: var(--ink-dim);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.astrum__stat {
+  display: block;
+  margin-bottom: 4px;
+  font: 700 var(--fs-24) / 1.1 var(--font-mono);
+  color: var(--ink);
+}
+
+.astrum__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.astrum__private {
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+}
+
+.astrum__chapter {
+  display: grid;
+  gap: 18px;
+}
+
+.astrum__chapter > p {
+  max-width: 68ch;
+  margin: 0;
+}
+
+.astrum__chapter-title {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin: 0;
+  font-size: var(--fs-24);
+}
+
+.astrum__num {
+  font: 700 var(--fs-14) / 1 var(--font-mono);
+  color: var(--route);
+}
+
+.astrum__sub {
+  margin: 8px 0 0;
+  font-size: var(--fs-16);
+}
+
+.astrum__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px 24px;
+  margin: 0;
+}
+
+.astrum__facts dt {
+  font-weight: 700;
+}
+
+.astrum__facts dd {
+  margin: 4px 0 0;
+  font-size: var(--fs-14);
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+/* Copy still to be written. */
+.placeholder {
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+.filler {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+  font: 700 var(--fs-12) / 1.4 var(--font-mono);
+  color: var(--caution);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px dashed var(--caution);
+  border-radius: var(--r-ctl);
+}
+
+/* ─── Architecture diagram ────────────────────────────────────────────── */
+
+.arch {
+  margin: 0;
+}
+
+.arch__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.arch__node {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.2s;
+}
+
+.arch__node rect {
+  fill: var(--panel);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  transition:
+    stroke 0.15s,
+    fill 0.15s;
+}
+
+.arch__node--sim > rect {
+  fill: color-mix(in srgb, var(--panel) 70%, transparent);
+  stroke-dasharray: 4 3;
+}
+
+.arch__node--bus rect {
+  fill: color-mix(in srgb, var(--route) 12%, var(--panel));
+  stroke: var(--route);
+}
+
+.arch__node.is-focus rect,
+.arch__node:focus-visible rect {
+  stroke: var(--select);
+  stroke-width: 2;
+}
+
+.arch__label {
+  font: 700 14px var(--font-sans);
+  fill: var(--ink);
+}
+
+.arch__sub {
+  font: 12px var(--font-mono);
+  fill: var(--ink-dim);
+}
+
+.arch__edge line {
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+  marker-end: none;
+}
+
+.arch__edge--inproc line {
+  stroke-dasharray: 5 4;
+}
+
+.arch__edge text {
+  font: 11px var(--font-mono);
+  fill: var(--ink-faint);
+}
+
+.is-dim {
+  opacity: 0.28;
+}
+
+.arch__caption {
+  display: grid;
+  gap: 2px;
+  min-height: 5.5em;
+  padding: 12px 14px;
+  margin-top: 8px;
+  font-size: var(--fs-14);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.arch__caption-sub {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+}
+
+.arch__caption-text {
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+/* ─── Tick stepper ────────────────────────────────────────────────────── */
+
+.tick__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tick__step {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  padding: 7px 10px;
+  font: inherit;
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+  text-align: left;
+  cursor: pointer;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-ctl);
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.tick__step.is-done {
+  color: var(--ink);
+}
+
+.tick__step.is-current {
+  color: var(--ink);
+  border-color: var(--select);
+  box-shadow: inset 3px 0 0 var(--select);
+}
+
+.tick__n {
+  font-family: var(--font-mono);
+  color: var(--ink-faint);
+}
+
+.tick__what {
+  min-height: 3em;
+  margin: 10px 0 0;
+  font-size: var(--fs-14);
+  line-height: 1.5;
+}
+
+.tick__what code {
+  margin-right: 6px;
+  color: var(--select);
+}
+
+.tick__step code,
+.tick__what code {
+  padding: 0;
+  font-size: inherit;
+  background: none;
+  border: 0;
+}
+
+.built__text .project__highlights,
+.mission__highlights {
+  font-size: var(--fs-14);
+}
+
+/* ─── Replay player ───────────────────────────────────────────────────── */
+
+.replay {
+  margin: 0;
+}
+
+.replay__canvas {
+  display: block;
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel) var(--r-panel) 0 0;
+}
+
+.replay__loading {
+  display: grid;
+  place-items: center;
+  height: 200px;
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.replay__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 10px 6px 6px;
+  background: var(--panel-bar);
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 var(--r-panel) var(--r-panel);
+}
+
+.replay__controls svg {
+  margin: 0;
+}
+
+.replay__scrub {
+  flex: 1;
+  min-width: 120px;
+  accent-color: var(--select);
+}
+
+.replay__time {
+  font: var(--fs-12) / 1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-dim);
+}
+
+.replay__legend {
+  display: flex;
+  gap: 12px;
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+}
+
+.replay__key::before {
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+  content: "";
+}
+
+.replay__key--select::before {
+  background: var(--select);
+}
+
+.replay__key--route::before {
+  background: var(--route);
+}
+
+.replay__caption {
+  margin-top: 8px;
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+}
+
+.replay__callouts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin: 10px 0 0;
+  list-style: none;
+}
+
+.replay__callout {
+  padding: 5px 10px;
+  font: inherit;
+  font-size: var(--fs-12);
+  color: var(--ink);
+  cursor: pointer;
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctl);
+}
+
+.replay__callout:hover {
+  color: var(--select);
+  border-color: var(--select);
+}
+
+.replay__callout-t {
+  font-family: var(--font-mono);
+  color: var(--route);
+}
+
+.replay--compact .replay__caption {
+  font-size: var(--fs-12);
+}
+
+/* ─── Charts ──────────────────────────────────────────────────────────── */
+
+.chart {
+  margin: 0;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.chart figcaption {
+  margin-top: 8px;
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+}
+
+.chart__axes {
+  display: block;
+  font-size: var(--fs-12);
+  color: var(--ink-faint);
+}
+
+.chart__grid line {
+  stroke: var(--line);
+}
+
+.chart__grid text,
+.chart__tick {
+  font: 11px var(--font-mono);
+  fill: var(--ink-faint);
+}
+
+.chart__line {
+  fill: none;
+  stroke: var(--select);
+  stroke-width: 2;
+}
+
+.course {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+.course__line {
+  fill: none;
+  stroke: var(--select);
+  stroke-width: 2;
+}
+
+.course__gate {
+  fill: var(--route);
+}
+
+.course__num,
+.course__label {
+  font: 10px var(--font-mono);
+  fill: var(--ink-dim);
+}
+
+.course__label--gap {
+  fill: var(--caution);
+}
+
+.course__post {
+  fill: var(--route);
+}
+
+.course__frame {
+  fill: color-mix(in srgb, var(--select) 30%, transparent);
+  stroke: var(--select);
+}
+
+/* ─── Speed bars ──────────────────────────────────────────────────────── */
+
+.perf {
+  margin: 0;
+}
+
+.perf__rows {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.perf__row {
+  display: grid;
+  grid-template-columns: 13em minmax(0, 1fr) 4.5em;
+  gap: 12px;
+  align-items: center;
+  font-size: var(--fs-14);
+}
+
+.perf__row .perf__bar {
+  height: 12px;
+  background: linear-gradient(90deg, var(--select), color-mix(in srgb, var(--select) 55%, transparent));
+  border-radius: 2px;
+}
+
+.perf__threads {
+  color: var(--ink-faint);
+}
+
+.perf__value {
+  font: 700 var(--fs-14) / 1 var(--font-mono);
+  text-align: right;
+}
+
+.perf figcaption {
+  margin-top: 10px;
+  font-size: var(--fs-12);
+  color: var(--ink-faint);
+}
+
+/* ─── Built on ASTRUM ─────────────────────────────────────────────────── */
+
+.lineage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: var(--fs-14);
+}
+
+.lineage__step a {
+  color: var(--ink);
+}
+
+.lineage__arrow {
+  margin: 0 8px;
+  color: var(--route);
+}
+
+.built {
+  display: grid;
+  gap: 20px;
+}
+
+.built__card {
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  scroll-margin-top: calc(var(--bar-h) + 16px);
+}
+
+.built__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+}
+
+.built__name {
+  margin: 0;
+  font-size: var(--fs-21);
+}
+
+.built__status {
+  padding: 2px 8px;
+  font: 700 var(--fs-12) / 1.4 var(--font-mono);
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  border-radius: var(--r-ctl);
+}
+
+.built__status--shipped {
+  color: var(--ok);
+}
+
+.built__status--wip {
+  color: var(--caution);
+}
+
+.built__tagline {
+  flex-basis: 100%;
+  margin: 2px 0 0;
+  color: var(--select);
+}
+
+.built__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 22px;
+  margin-top: 14px;
+}
+
+.built__body:not(:has(.built__visual)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.built__text p {
+  margin: 0 0 10px;
+  font-size: var(--fs-14);
+  line-height: 1.55;
+}
+
+.built__tech {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12) !important;
+  color: var(--ink-dim);
+}
+
+.built__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  padding-top: 14px;
+  margin-top: 14px;
+  font-size: var(--fs-12);
+  border-top: 1px solid var(--line);
+}
+
+.built__foot-label {
+  font-family: var(--font-mono);
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.built__uses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 3px 9px;
+  font: inherit;
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+}
+
+.chip:hover,
+.chip:focus-visible {
+  color: var(--select);
+  border-color: var(--select);
+}
+
+.built__led {
+  margin-left: auto;
+  color: var(--ink-dim);
+}
+
+.built__led a {
+  margin-left: 6px;
+  color: var(--route);
+}
+
+.projects__more {
+  margin: 0 0 18px;
+  font-size: var(--fs-21);
+}
+
+.mission__built {
+  margin: 0 0 10px;
+  font: 700 var(--fs-12) / 1.4 var(--font-mono);
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+.mission .replay,
+.mission .chart {
+  margin: 12px 0;
+}
+
+@media (max-width: 900px) {
+  .built__body,
+  .course {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .perf__row {
+    grid-template-columns: 9em minmax(0, 1fr) 4em;
+  }
+
+  .built__led {
+    margin-left: 0;
+  }
+}

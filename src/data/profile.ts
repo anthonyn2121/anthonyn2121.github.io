@@ -44,11 +44,6 @@ export interface Project {
   demo?: string;
   /** Optional screenshot in /public, e.g. "/projects/mavdeck.png". */
   image?: string;
-  /**
-   * What represents this project on the flight-deck page (/carrier/). Defaults to a jet;
-   * "quadcopter" parks a Group 1 quadcopter on a UAS pad instead.
-   */
-  vehicle?: "quadcopter";
 }
 
 export interface PlatformWork {
@@ -194,7 +189,6 @@ export const profile: Profile = {
       ],
       tech: ["Python", "PX4", "Gazebo", "ROS 2", "GitHub Actions"],
       groups: [1, 2],
-      vehicle: "quadcopter",
       repo: "https://github.com/your-github-username/sitl-sweep",
     },
     {

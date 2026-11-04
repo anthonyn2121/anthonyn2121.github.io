@@ -5,18 +5,23 @@ ASCII (Three.js, rendered through a glyph pass and a tilt-shift blur). The landi
 live miniature: deck crews work, a jet comes up the elevator and is shot off the bow every
 8 seconds, a helicopter circles, and the escort steams alongside.
 
-- **Your projects are the aircraft.** Each featured project is parked in the row forward of
-  the island, tagged with its side number. Hover or tab to one for its tagline; click it and
-  it launches while its mission card opens. Jets (F-35Cs) taxi to the catapult, spread their
-  wings, launch, and trap back aboard when the card closes. A project marked as a quadcopter
-  lifts off its UAS pad and circles over the deck instead.
+- **Your ASTRUM projects are the aircraft.** The projects built on ASTRUM (your flight
+  simulation platform) are parked in the row forward of the island, tagged with their side
+  numbers. Hover or tab to one for its tagline; click it and it launches while its mission card
+  opens with that project's replay or chart. Jets (F-35Cs) taxi to the catapult, spread their
+  wings, launch, and trap back aboard when the card closes. The drone-racing project is a Group 1
+  quadcopter that lifts off its UAS pad and circles over the deck instead.
 - **The camera follows.** It tracks your launches off the bow and pans aft for recoveries,
   pulling the tilt-shift focus onto the aircraft.
 - **A status strip** shows both catapults, recoveries, the UAS pad and what's airborne, with a
   pause button for the motion.
 
-Below the deck are plain, skimmable sections for recruiters: About, Experience, Projects
-(plus your other public GitHub repos), Platforms (Groups 1 to 5), and Contact.
+Below the deck are plain, skimmable sections for recruiters: About, Experience, Projects,
+Platforms (Groups 1 to 5), and Contact. Projects opens with an **ASTRUM case study**: how it
+works (an interactive architecture diagram and one sim tick, step by step), why its flight is
+realistic (a split-S replay with flight-data strips you can scrub, and a speed chart), and a card
+for each project built on it, whose "Uses" chips light up the parts of the diagram it relies on.
+Your other projects and public GitHub repos follow under "Other work".
 
 There are two themes. Day is daylight flight ops; Night is moonlit, with deck edge lights and
 navigation lights. The site follows the visitor's system setting until they pick one. The
@@ -51,7 +56,7 @@ Almost everything lives in **`src/data/profile.ts`**:
 | `availability`, `yearsExperience` | Status light in the top bar, Contact, Experience intro |
 | `email`, `links`, `githubUsername` | Contact buttons and the GitHub repo list |
 | `experience` | The Experience timeline |
-| `projects` | The first four are the aircraft on deck (set `vehicle: "quadcopter"` for a Group 1 quadcopter); all appear in the Projects section |
+| `projects` | The "Other work" cards in the Projects section |
 | `platforms`, `skills` | Platforms section |
 | `about` | About section paragraphs |
 
@@ -63,6 +68,16 @@ Other files:
   `image: "/projects/mavdeck.png"` on the project.
 - **Search/social description:** edit the `<title>` and `<meta name="description">` in `index.html`
   (and `skies/index.html` for the sky page).
+
+The ASTRUM case study has its own files:
+
+- **`src/data/astrum.ts`**: the summary, stats, architecture parts, tick steps, realism facts,
+  benchmark rows, and the projects built on ASTRUM (problem, approach, highlights, what each
+  uses and led to, its visual, and whether it's on the flight deck). Lines starting
+  "Placeholder:" are filler waiting for your words; set `repo` once the repository is public.
+- **`public/projects/astrum/`**: the replays and charts. Rebuild them from an ASTRUM checkout
+  with `node scripts/build-astrum-assets.mjs path/to/astrum`. The training curve and the race
+  course are placeholders (they show a "Placeholder data" badge) until real ones are exported.
 
 The sky page has its own files:
 
