@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" data-theme="night">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Name, UAS systems engineer</title>
+    <meta name="description" content="Portfolio of Your Name: UAS systems engineer working across Group 1 to Group 5 unmanned aircraft." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      // Apply the saved or system theme before first paint to avoid a flash.
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t !== "day" && t !== "night") {
+            t = matchMedia("(prefers-color-scheme: light)").matches ? "day" : "night";
+          }
+          document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

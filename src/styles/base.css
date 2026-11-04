@@ -1,0 +1,631 @@
+/* ─── Tokens ──────────────────────────────────────────────────────────── */
+
+:root {
+  /* B612 was designed for Airbus cockpit displays: legible at small sizes, under glare. */
+  --font-sans: "B612", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "B612 Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Book type for the myths on the sky page. EB Garamond revives the faces of Bayer's era. */
+  --font-serif: "EB Garamond", Garamond, "Times New Roman", serif;
+
+  /* Type scale after Bringhurst: 12 14 16 18 21 24 36 48 60 */
+  --fs-12: 0.75rem;
+  --fs-14: 0.875rem;
+  --fs-16: 1rem;
+  --fs-18: 1.125rem;
+  --fs-21: 1.3125rem;
+  --fs-24: 1.5rem;
+  --fs-36: 2.25rem;
+  --fs-48: 3rem;
+  --fs-60: 3.75rem;
+
+  --r-panel: 6px;
+  --r-ctl: 3px;
+  --bar-h: 56px;
+  --gap: 10px;
+}
+
+/*
+ * Night: a ground control station after dark.
+ * Colors follow glass-cockpit conventions: magenta is the active route,
+ * cyan is whatever is selected or interactive, and green/amber/red are
+ * reserved for status lights.
+ */
+:root,
+[data-theme="night"] {
+  color-scheme: dark;
+  --bg: #0f1b24;
+  --panel: #152532;
+  --panel-bar: #192c3a;
+  --panel-raised: #1d3343;
+  --line: #29404f;
+  --line-strong: #3a5669;
+  --ink: #e6eef2;
+  --ink-dim: #8ca3b1;
+  --ink-faint: #5f7787;
+  --route: #e25bd3;
+  --select: #3fd0e8;
+  --on-select: #06232c;
+  --ok: #5bd48a;
+  --caution: #f2b33d;
+  --warn: #ff6b6b;
+  --terrain: #3b5566;
+  --terrain-opacity: 0.3;
+  --map-bg: #112330;
+  --map-contour: #2c4b5d;
+  --map-grid: #1b3242;
+  --feed-bg: #0d1a1f;
+  --feed-line: #4d6a70;
+  --feed-ink: #c9dde0;
+  --silhouette-fill: var(--panel);
+  --led-glow: 0 0 6px;
+
+  /* Sky chart. Plain colour literals: the canvas reads these directly. */
+  --sky-bg: #050b14;
+  --sky-bg-glow: #0d1a2b;
+  --sky-star: #f2f6ff;
+  --sky-line: rgba(140, 163, 177, 0.4);
+  --sky-line-featured: rgba(63, 208, 232, 0.75);
+  --sky-select: #3fd0e8;
+  --sky-bound: rgba(95, 119, 135, 0.32);
+  --sky-grid: rgba(63, 208, 232, 0.07);
+  --sky-ecliptic: rgba(226, 91, 211, 0.38);
+  --sky-mw: #9fb6d8;
+  --sky-figure: #a8e4f0;
+  --sky-label: rgba(166, 186, 198, 0.85);
+  --sky-label-featured: #6fdcee;
+  --sky-ground: rgba(21, 37, 50, 0.55);
+  --sky-horizon: rgba(230, 238, 242, 0.6);
+  --sky-halo: #050b14;
+}
+
+/* Day: a VFR sectional chart, with chart green paper, navy ink, and sectional magenta. */
+[data-theme="day"] {
+  color-scheme: light;
+  --bg: #e9eee2;
+  --panel: #f6f7f0;
+  --panel-bar: #eef1e6;
+  --panel-raised: #ffffff;
+  --line: #c3ccb8;
+  --line-strong: #9da98f;
+  --ink: #18233f;
+  --ink-dim: #4e5a6e;
+  --ink-faint: #7a8494;
+  --route: #a2237f;
+  --select: #1f56a8;
+  --on-select: #ffffff;
+  --ok: #2e7d4f;
+  --caution: #9a6200;
+  --warn: #c0322b;
+  --terrain: #b79e6e;
+  --terrain-opacity: 0.38;
+  --map-bg: #e4ecd9;
+  --map-contour: #cdb88d;
+  --map-grid: #c6d4e6;
+  --feed-bg: #d5ddd0;
+  --feed-line: #7f907b;
+  --feed-ink: #1f2b22;
+  --silhouette-fill: var(--panel-raised);
+  --led-glow: 0 0 0;
+
+  /* Sky chart: a printed star atlas, ink on cream. */
+  --sky-bg: #efe7d2;
+  --sky-bg-glow: #f7f2e4;
+  --sky-star: #18233f;
+  --sky-line: rgba(24, 35, 63, 0.42);
+  --sky-line-featured: rgba(31, 86, 168, 0.85);
+  --sky-select: #1f56a8;
+  --sky-bound: rgba(122, 132, 148, 0.5);
+  --sky-grid: rgba(31, 86, 168, 0.1);
+  --sky-ecliptic: rgba(162, 35, 127, 0.45);
+  --sky-mw: #7d8fae;
+  --sky-figure: #5b4330;
+  --sky-label: rgba(78, 90, 110, 0.9);
+  --sky-label-featured: #1f56a8;
+  --sky-ground: rgba(214, 222, 200, 0.5);
+  --sky-horizon: rgba(24, 35, 63, 0.6);
+  --sky-halo: #efe7d2;
+}
+
+/* ─── Base ────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--bar-h) + 12px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fs-16) / 1.55 var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--select);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+code {
+  padding: 1px 5px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--panel-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--r-ctl);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--select) 35%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--select);
+  outline-offset: 2px;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* Live numbers: B612's tabular figures keep readouts from jittering as they change. */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 12px;
+  z-index: 100;
+  padding: 10px 14px;
+  font-weight: 700;
+  color: var(--on-select);
+  background: var(--select);
+  border-radius: var(--r-ctl);
+}
+
+.skip-link:focus {
+  top: 10px;
+}
+
+/* ─── Controls ────────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  font: 700 var(--fs-14) / 1 var(--font-sans);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--panel-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctl);
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background-color 0.15s;
+}
+
+.btn:hover {
+  color: var(--select);
+  border-color: var(--select);
+}
+
+.btn--primary {
+  color: var(--on-select);
+  background: var(--select);
+  border-color: var(--select);
+}
+
+.btn--primary:hover {
+  color: var(--on-select);
+  background: color-mix(in srgb, var(--select) 82%, var(--ink));
+}
+
+.btn--ghost {
+  background: transparent;
+}
+
+.btn--icon {
+  width: 38px;
+  padding: 0;
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.led {
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: var(--ok);
+  border-radius: 50%;
+  box-shadow: var(--led-glow) var(--ok);
+}
+
+.led--caution {
+  background: var(--caution);
+  box-shadow: var(--led-glow) var(--caution);
+}
+
+.led--active {
+  background: var(--route);
+  box-shadow: var(--led-glow) var(--route);
+}
+
+/* ─── Status bar ──────────────────────────────────────────────────────── */
+
+.statusbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  height: var(--bar-h);
+  padding: 0 16px;
+  background: var(--panel-bar);
+  border-bottom: 1px solid var(--line);
+}
+
+.statusbar__id {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.statusbar__ownship {
+  width: 18px;
+  height: 18px;
+  fill: var(--select);
+}
+
+.statusbar__name {
+  font-weight: 700;
+}
+
+.statusbar__callsign {
+  padding: 3px 6px;
+  font: 700 var(--fs-12) / 1 var(--font-sans);
+  color: var(--ink-dim);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctl);
+}
+
+.statusbar__nav ul {
+  display: flex;
+  gap: 2px;
+  list-style: none;
+}
+
+.statusbar__nav a {
+  display: block;
+  padding: 8px 10px;
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--r-ctl);
+}
+
+.statusbar__nav a:hover {
+  color: var(--ink);
+  background: var(--panel-raised);
+}
+
+.statusbar__nav a[aria-current="page"] {
+  color: var(--ink);
+  box-shadow: inset 0 -2px 0 var(--select);
+}
+
+.statusbar__readouts {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-left: auto;
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+
+.readout {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.readout--coords,
+.readout--clock {
+  font-size: var(--fs-12);
+  font-variant-numeric: tabular-nums;
+}
+
+.readout--coords {
+  min-width: 21ch;
+  white-space: pre;
+}
+
+.statusbar__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.statusbar__about[aria-expanded="true"] {
+  color: var(--select);
+  border-color: var(--select);
+}
+
+@media (max-width: 1460px) {
+  .readout--coords {
+    display: none;
+  }
+}
+
+@media (max-width: 1270px) {
+  .readout--clock {
+    display: none;
+  }
+
+  .statusbar__about {
+    width: 38px;
+    padding: 0;
+  }
+
+  .statusbar__about-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1050px) {
+  .statusbar__nav {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .statusbar {
+    gap: 12px;
+    padding: 0 10px;
+  }
+
+  .statusbar__callsign,
+  .statusbar__readouts {
+    display: none;
+  }
+
+  .statusbar__actions {
+    margin-left: auto;
+  }
+}
+
+/* ─── Terrain background ──────────────────────────────────────────────── */
+
+.terrain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.terrain__layer {
+  position: absolute;
+  top: calc(var(--tile-size) * -1);
+  left: 0;
+  width: calc(100% + var(--tile-size));
+  height: calc(100% + var(--tile-size));
+  background: var(--terrain);
+  opacity: var(--terrain-opacity);
+  -webkit-mask: var(--tile) 0 0 / var(--tile-size) var(--tile-size) repeat;
+  mask: var(--tile) 0 0 / var(--tile-size) var(--tile-size) repeat;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .terrain__layer {
+    animation: terrain-drift 300s linear infinite;
+  }
+}
+
+/* Shift by exactly one tile so the loop is seamless. Matches TILE in TerrainBackground.tsx. */
+@keyframes terrain-drift {
+  to {
+    transform: translate3d(-720px, 720px, 0);
+  }
+}
+
+/* ─── Reticle cursor ──────────────────────────────────────────────────── */
+
+html.reticle-on,
+html.reticle-on * {
+  cursor: none !important;
+}
+
+.reticle {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.reticle__cross {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.reticle__cross::before,
+.reticle__cross::after {
+  position: absolute;
+  content: "";
+}
+
+/* A crosshair with an open centre, so the exact point stays visible. */
+.reticle__cross::before {
+  top: -0.75px;
+  left: -11px;
+  width: 22px;
+  height: 1.5px;
+  background: linear-gradient(to right, var(--select) 0 8px, transparent 8px 14px, var(--select) 14px);
+}
+
+.reticle__cross::after {
+  top: -11px;
+  left: -0.75px;
+  width: 1.5px;
+  height: 22px;
+  background: linear-gradient(to bottom, var(--select) 0 8px, transparent 8px 14px, var(--select) 14px);
+}
+
+.reticle__box {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.reticle__corner {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border: 0 solid var(--ink-faint);
+  transition:
+    border-color 0.15s,
+    width 0.15s,
+    height 0.15s;
+}
+
+.reticle__corner--tl {
+  top: 0;
+  left: 0;
+  border-top-width: 1.5px;
+  border-left-width: 1.5px;
+}
+
+.reticle__corner--tr {
+  top: 0;
+  right: 0;
+  border-top-width: 1.5px;
+  border-right-width: 1.5px;
+}
+
+.reticle__corner--bl {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 1.5px;
+  border-left-width: 1.5px;
+}
+
+.reticle__corner--br {
+  right: 0;
+  bottom: 0;
+  border-right-width: 1.5px;
+  border-bottom-width: 1.5px;
+}
+
+.reticle__box.is-locked .reticle__corner {
+  width: 10px;
+  height: 10px;
+  border-color: var(--select);
+}
+
+.reticle__box.is-pressed .reticle__corner {
+  border-color: var(--route);
+}
+
+/* ─── Footer ──────────────────────────────────────────────────────────── */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  width: min(1152px, 100% - 48px);
+  padding: 32px 0 48px;
+  margin: 0 auto;
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+  border-top: 1px solid var(--line);
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}

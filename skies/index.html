@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" data-theme="night" class="skies-page">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Above the skies, Your Name</title>
+    <meta name="description" content="Stargazing, constellations, and the Greek and Roman myths behind them, on a sky chart you can turn." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      // Apply the saved or system theme before first paint to avoid a flash. Same as the main page.
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t !== "day" && t !== "night") {
+            t = matchMedia("(prefers-color-scheme: light)").matches ? "day" : "night";
+          }
+          document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/skies/main.tsx"></script>
+  </body>
+</html>

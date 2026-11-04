@@ -1,0 +1,430 @@
+/* ─── Section layout ──────────────────────────────────────────────────── */
+
+.sections {
+  max-width: 1200px;
+  padding: 0 24px;
+  margin: 0 auto;
+}
+
+.section {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 32px 64px;
+  padding: 88px 0;
+  border-top: 1px solid var(--line);
+}
+
+.sections > .section:first-child {
+  border-top: 0;
+}
+
+.section__head {
+  position: sticky;
+  top: calc(var(--bar-h) + 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+  align-self: start;
+}
+
+.section__title {
+  font: 700 var(--fs-36) / 1.1 var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.section__intro {
+  max-width: 34ch;
+  color: var(--ink-dim);
+}
+
+.section__cta {
+  margin-top: 6px;
+}
+
+.section__body {
+  min-width: 0;
+}
+
+@media (max-width: 880px) {
+  .section {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 64px 0;
+  }
+
+  .section__head {
+    position: static;
+  }
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctl);
+}
+
+/* ─── About ───────────────────────────────────────────────────────────── */
+
+.about {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.about__photo {
+  flex: none;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--r-panel);
+}
+
+.prose {
+  display: grid;
+  gap: 1em;
+  max-width: 64ch;
+  font-size: var(--fs-18);
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .about {
+    flex-direction: column;
+  }
+}
+
+/* ─── Experience: the flight log ──────────────────────────────────────── */
+
+.log {
+  list-style: none;
+}
+
+.log__entry {
+  position: relative;
+  max-width: 70ch;
+  padding: 0 0 52px 40px;
+}
+
+.log__entry:last-child {
+  padding-bottom: 0;
+}
+
+/* The leg to the previous waypoint. The newest leg is the active one, so it's magenta, as on the map. */
+.log__entry::before {
+  position: absolute;
+  top: 22px;
+  bottom: -2px;
+  left: 8px;
+  width: 2px;
+  content: "";
+  background: var(--line-strong);
+}
+
+.log__entry.is-current::before {
+  background: var(--route);
+}
+
+.log__entry:last-child::before {
+  display: none;
+}
+
+.log__marker {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+}
+
+.log__diamond {
+  width: 11px;
+  height: 11px;
+  background: var(--ink);
+  transform: rotate(45deg);
+}
+
+.is-current .log__diamond {
+  background: var(--route);
+}
+
+.log__when {
+  display: flex;
+  gap: 12px;
+  font-size: var(--fs-14);
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-dim);
+}
+
+.log__wp {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.is-current .log__wp {
+  color: var(--route);
+}
+
+.log__role {
+  margin-top: 8px;
+  font: 700 var(--fs-24) / 1.25 var(--font-sans);
+}
+
+.log__org {
+  margin-top: 2px;
+  margin-bottom: 10px;
+  color: var(--ink-dim);
+}
+
+.log__summary {
+  margin-top: 14px;
+}
+
+.log__highlights,
+.project__highlights {
+  display: grid;
+  gap: 6px;
+  padding-left: 1.2em;
+  margin-top: 10px;
+}
+
+.log__highlights li::marker,
+.project__highlights li::marker {
+  color: var(--ink-faint);
+}
+
+/* ─── Projects ────────────────────────────────────────────────────────── */
+
+.project {
+  display: grid;
+  gap: 14px;
+  max-width: 70ch;
+  padding: 36px 0;
+  border-top: 1px solid var(--line);
+}
+
+.project:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.project__name {
+  font: 700 var(--fs-24) / 1.2 var(--font-mono);
+}
+
+.project__tagline {
+  margin-top: 4px;
+  font-size: var(--fs-18);
+  color: var(--ink-dim);
+}
+
+.project__image {
+  border: 1px solid var(--line);
+  border-radius: var(--r-ctl);
+}
+
+.project__meta {
+  display: grid;
+  gap: 4px;
+  font-size: var(--fs-14);
+}
+
+.project__meta > div {
+  display: grid;
+  grid-template-columns: 7.5em minmax(0, 1fr);
+  gap: 12px;
+}
+
+.project__meta dt {
+  color: var(--ink-dim);
+}
+
+.project__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.repos {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+  padding-top: 36px;
+  margin-top: 20px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.repos__title {
+  font: 700 var(--fs-21) / 1.2 var(--font-sans);
+}
+
+.repos__note {
+  max-width: 60ch;
+  color: var(--ink-dim);
+}
+
+.repos__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0 32px;
+  width: 100%;
+  list-style: none;
+}
+
+.repo {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.repo__name {
+  font: 700 var(--fs-16) / 1.3 var(--font-mono);
+}
+
+.repo__desc {
+  font-size: var(--fs-14);
+}
+
+.repo__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+}
+
+/* ─── Platforms ───────────────────────────────────────────────────────── */
+
+.roster {
+  list-style: none;
+}
+
+.roster__row {
+  display: grid;
+  grid-template-columns: 120px minmax(200px, 240px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+}
+
+.roster__row:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.roster__art {
+  display: grid;
+  place-items: center;
+  height: 112px;
+  color: var(--ink);
+}
+
+.aircraft-icon * {
+  vector-effect: non-scaling-stroke;
+}
+
+.roster__group {
+  font: 700 var(--fs-21) / 1.2 var(--font-sans);
+}
+
+.roster__spec dl {
+  display: grid;
+  gap: 2px;
+  margin-top: 6px;
+  font-size: var(--fs-14);
+}
+
+.roster__spec dl > div {
+  display: grid;
+  grid-template-columns: 5.5em minmax(0, 1fr);
+  gap: 8px;
+}
+
+.roster__spec dt {
+  color: var(--ink-dim);
+}
+
+.roster__types {
+  margin-top: 6px;
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+}
+
+@media (max-width: 720px) {
+  .roster__row {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 16px 20px;
+  }
+
+  .roster__art {
+    height: 88px;
+  }
+
+  .roster__work {
+    grid-column: 1 / -1;
+  }
+}
+
+.skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px 32px;
+  padding-top: 36px;
+  margin-top: 36px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.skills__area {
+  margin-bottom: 6px;
+  font: 700 var(--fs-16) / 1.3 var(--font-sans);
+}
+
+.skills__group p {
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+}
+
+/* ─── Contact ─────────────────────────────────────────────────────────── */
+
+.contact {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+}
+
+.contact__lede {
+  font-size: var(--fs-21);
+}
+
+.contact__email {
+  font: 700 clamp(var(--fs-24), 4vw, var(--fs-48)) / 1.15 var(--font-sans);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  text-decoration-color: var(--select);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+.contact__email:hover {
+  color: var(--select);
+  text-decoration-thickness: 3px;
+}
+
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.contact__note {
+  color: var(--ink-dim);
+}

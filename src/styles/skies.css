@@ -1,0 +1,642 @@
+/* ─── Above the skies: page frame ─────────────────────────────────────── */
+
+/* One screen, no page scroll: the chart takes drags, wheels, and pinches. */
+html.skies-page,
+html.skies-page body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.skies {
+  position: relative;
+  height: calc(100svh - var(--bar-h));
+  overflow: hidden;
+  background: var(--sky-bg);
+}
+
+.skies__status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-size: var(--fs-14);
+  color: var(--ink-dim);
+  text-align: center;
+}
+
+.skies__view,
+.skies__sky {
+  position: absolute;
+  inset: 0;
+}
+
+.readout--sky {
+  min-width: 30ch;
+}
+
+/* No layout-note button up here, so the sky coordinates fit sooner than the main page's. */
+@media (min-width: 1381px) {
+  .skies-page .readout--coords {
+    display: inline-flex;
+  }
+}
+
+/* While the view pitches up, the chart slides down from above: fade its trailing edge, and hold its HUD back. */
+.skies__view.is-pitching .skies__sky {
+  -webkit-mask: linear-gradient(to bottom, #000 calc(100% - 28vh), transparent);
+  mask: linear-gradient(to bottom, #000 calc(100% - 28vh), transparent);
+}
+
+.sky__crosshair-mark,
+.sky__controls {
+  transition: opacity 0.5s;
+}
+
+.skies__view.is-pitching .sky__crosshair-mark,
+.skies__view.is-pitching .sky__controls {
+  opacity: 0;
+}
+
+/* ─── Chart ───────────────────────────────────────────────────────────── */
+
+.sky {
+  position: absolute;
+  inset: 0;
+}
+
+.sky__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+}
+
+.sky__canvas:active {
+  cursor: grabbing;
+}
+
+.sky__canvas:focus-visible {
+  outline: 2px solid var(--select);
+  outline-offset: -2px;
+}
+
+/* The view's centre, as on the payload feed: a crosshair with an open middle. */
+.sky__crosshair {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--select);
+  pointer-events: none;
+}
+
+.sky__crosshair-mark {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  width: 30px;
+  height: 30px;
+  opacity: 0.75;
+}
+
+.sky__crosshair-mark::before,
+.sky__crosshair-mark::after {
+  position: absolute;
+  content: "";
+}
+
+.sky__crosshair-mark::before {
+  top: calc(50% - 0.75px);
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(to right, currentColor 0 10px, transparent 10px 20px, currentColor 20px);
+}
+
+.sky__crosshair-mark::after {
+  top: 0;
+  left: calc(50% - 0.75px);
+  width: 1.5px;
+  height: 100%;
+  background: linear-gradient(to bottom, currentColor 0 10px, transparent 10px 20px, currentColor 20px);
+}
+
+.sky__crosshair-label {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  padding: 3px 7px;
+  font: 700 var(--fs-12) / 1 var(--font-sans);
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  background: color-mix(in srgb, var(--sky-bg) 72%, transparent);
+  border-radius: var(--r-ctl);
+  transform: translateX(-50%);
+}
+
+.sky__crosshair-hint {
+  color: var(--select);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.sky__controls {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  padding: 4px;
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  transform: translate(-50%, calc(-100% - var(--gap)));
+}
+
+.sky__controls .btn {
+  min-height: 34px;
+  border-color: transparent;
+}
+
+.sky__controls .btn--icon {
+  width: 34px;
+}
+
+.sky__controls .btn:hover,
+.sky__controls .btn[aria-pressed="true"] {
+  color: var(--select);
+  border-color: var(--select);
+}
+
+.sky__fov {
+  min-width: 8.5ch;
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.sky__fov abbr {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sky__fov .num {
+  font-size: var(--fs-14);
+  color: var(--ink);
+}
+
+.sky__sep {
+  align-self: stretch;
+  width: 1px;
+  margin: 4px;
+  background: var(--line);
+}
+
+@media (max-width: 560px) {
+  .sky__controls {
+    max-width: calc(100vw - 2 * var(--gap));
+  }
+
+  .sky__controls .btn:not(.btn--icon) {
+    padding: 0 9px;
+  }
+}
+
+/* ─── Overlay panels ──────────────────────────────────────────────────── */
+
+/*
+ * Panels float over the chart. The empty "clear" cell is the part of the chart nobody covers;
+ * the chart measures it to centre the view and place its controls.
+ */
+.skies__overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-areas:
+    "guide clear card"
+    "guide clear card";
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr) auto;
+  gap: var(--gap);
+  padding: var(--gap);
+  pointer-events: none;
+}
+
+.skies__overlay.is-guide-closed {
+  grid-template-areas:
+    "guide . card"
+    "clear clear card";
+}
+
+.skies__overlay > * {
+  pointer-events: auto;
+}
+
+.skies__clear {
+  grid-area: clear;
+  pointer-events: none;
+}
+
+.skies__guide {
+  grid-area: guide;
+  align-self: start;
+  max-height: 100%;
+}
+
+.skies__card {
+  grid-area: card;
+  align-self: start;
+  width: min(460px, 40vw);
+  max-height: 100%;
+}
+
+.skies__guide .panel__body,
+.skies__card .panel__body {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.skies .panel__meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-right: -6px;
+}
+
+.skies .panel__meta .btn--icon {
+  width: 28px;
+  min-height: 28px;
+}
+
+@media (max-width: 760px) {
+  .skies__overlay,
+  .skies__overlay.is-guide-closed {
+    grid-template-areas:
+      "guide"
+      "clear"
+      "card";
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skies__guide {
+    max-height: 62svh;
+  }
+
+  .skies__card {
+    width: auto;
+    max-height: 56svh;
+  }
+}
+
+/* ─── Guide ───────────────────────────────────────────────────────────── */
+
+.guide {
+  display: grid;
+  gap: 18px;
+  padding: 16px 18px 18px;
+}
+
+.guide[hidden] {
+  display: none;
+}
+
+.guide__note {
+  display: grid;
+  gap: 0.6em;
+  font: 400 var(--fs-18) / 1.45 var(--font-serif);
+}
+
+.guide__hint {
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+}
+
+.guide__heading {
+  display: block;
+  margin-bottom: 6px;
+  font: 700 var(--fs-12) / 1.2 var(--font-sans);
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.guide__stories {
+  display: grid;
+  margin: 0 -8px;
+  list-style: none;
+}
+
+.guide__story {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: baseline;
+  width: 100%;
+  padding: 5px 8px;
+  font: var(--fs-14) / 1.3 var(--font-sans);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-ctl);
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+
+.guide__story:hover {
+  border-color: var(--line-strong);
+}
+
+.guide__story[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--select) 12%, transparent);
+  border-color: var(--select);
+}
+
+/* The same glow the featured constellations have on the chart. */
+.guide__glow {
+  align-self: center;
+  width: 8px;
+  height: 8px;
+  background: var(--sky-line-featured);
+  border-radius: 50%;
+  box-shadow: var(--led-glow) var(--sky-line-featured);
+}
+
+.guide__story-title {
+  font: 400 var(--fs-18) / 1.25 var(--font-serif);
+}
+
+.guide__story-name {
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+}
+
+.guide__all {
+  display: block;
+}
+
+.guide__select {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 10px;
+  font: var(--fs-14) var(--font-sans);
+  color: var(--ink);
+  background: var(--panel-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctl);
+}
+
+.guide__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.guide__credits {
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+}
+
+.guide__credits[open] {
+  flex-basis: 100%;
+}
+
+.guide__credits summary {
+  font-weight: 700;
+  color: var(--select);
+  cursor: pointer;
+}
+
+.guide__credits ul {
+  display: grid;
+  gap: 6px;
+  padding-left: 1.1em;
+  margin-top: 8px;
+}
+
+/* ─── Story card ──────────────────────────────────────────────────────── */
+
+.story {
+  display: grid;
+  gap: 14px;
+  padding: 20px 24px 24px;
+}
+
+.story__coords {
+  font-size: var(--fs-12);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-dim);
+}
+
+@container (max-width: 400px) {
+  .story__coords {
+    display: none;
+  }
+}
+
+/* The story's group is its route through the sky, so it takes the route colour. */
+.story__kicker {
+  font: 700 var(--fs-12) / 1.2 var(--font-sans);
+  color: var(--route);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.story__title {
+  margin-top: -6px;
+  font: 600 clamp(var(--fs-24), 3vw, var(--fs-36)) / 1.08 var(--font-serif);
+  letter-spacing: -0.005em;
+}
+
+.story__figure {
+  font: italic 400 var(--fs-18) / 1.4 var(--font-serif);
+  color: var(--ink-dim);
+}
+
+.story__text {
+  display: grid;
+  gap: 0.75em;
+  max-width: 62ch;
+  font: 400 1.1875rem / 1.55 var(--font-serif);
+  hyphens: auto;
+}
+
+.story__text p:first-child::first-letter {
+  float: left;
+  padding: 0.06em 0.08em 0 0;
+  font-size: 3.4em;
+  font-weight: 600;
+  line-height: 0.85;
+  color: var(--select);
+}
+
+.story__facts {
+  margin-top: 6px;
+}
+
+.story__facts > div {
+  grid-template-columns: 9.5em minmax(0, 1fr);
+}
+
+.story__heading {
+  margin-top: 6px;
+  font: 700 var(--fs-12) / 1.2 var(--font-sans);
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.story__sources {
+  display: grid;
+  gap: 4px;
+  margin-top: -6px;
+  font: 400 var(--fs-16) / 1.4 var(--font-serif);
+  list-style: none;
+}
+
+.story__credit {
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+}
+
+.story__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.story__next {
+  margin-left: auto;
+}
+
+/* ─── Pitch-up transition ─────────────────────────────────────────────── */
+
+.pitch {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  perspective: 1100px;
+}
+
+/* The ground's top edge is the horizon; the layer tilts back about it. */
+.pitch__ground {
+  position: absolute;
+  top: 0;
+  right: -20%;
+  left: -20%;
+  height: 140%;
+  background: var(--bg);
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+.pitch__ground .terrain {
+  position: absolute;
+}
+
+.pitch__horizon {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--ink);
+  box-shadow: 0 0 14px var(--select);
+}
+
+/* A little skyglow above the horizon. */
+.pitch__horizon::before {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+  left: 0;
+  height: 26vh;
+  content: "";
+  background: linear-gradient(to top, color-mix(in srgb, var(--select) 20%, transparent), transparent);
+}
+
+.pitch__hud {
+  position: absolute;
+  inset: 0;
+  color: var(--select);
+  pointer-events: none;
+}
+
+.pitch__ladder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.pitch__rung {
+  position: absolute;
+  left: -110px;
+  display: flex;
+  justify-content: space-between;
+  width: 220px;
+  font: 700 var(--fs-12) / 1 var(--font-sans);
+  transform: translateY(-50%);
+}
+
+.pitch__rung::before {
+  position: absolute;
+  top: 50%;
+  right: 28px;
+  left: 28px;
+  height: 1.5px;
+  content: "";
+  background: linear-gradient(to right, currentColor 0 38%, transparent 38% 62%, currentColor 62%);
+}
+
+/* Below the horizon, rungs are dashed, as on a flight display. */
+.pitch__rung--down::before {
+  background: repeating-linear-gradient(to right, currentColor 0 8px, transparent 8px 14px);
+  -webkit-mask: linear-gradient(to right, #000 0 38%, transparent 38% 62%, #000 62%);
+  mask: linear-gradient(to right, #000 0 38%, transparent 38% 62%, #000 62%);
+}
+
+.pitch__aircraft {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140px;
+  height: 28px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: translate(-50%, -50%);
+}
+
+.pitch__readout {
+  position: absolute;
+  top: calc(50% + 34px);
+  left: 50%;
+  padding: 6px 10px;
+  font: 700 var(--fs-14) / 1 var(--font-sans);
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--r-ctl);
+  transform: translateX(-50%);
+}
