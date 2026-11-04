@@ -14,6 +14,3 @@ export function createBus<A extends unknown[]>() {
     },
   };
 }
-
-/** The reticle streams pointer position to the top bar. */
-export const cursorBus = createBus<[x: number, y: number]>();

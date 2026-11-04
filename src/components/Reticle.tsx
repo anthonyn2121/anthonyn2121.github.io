@@ -1,6 +1,5 @@
 import { m, useMotionValue, useSpring } from "motion/react";
 import { useEffect, useRef } from "react";
-import { cursorBus } from "../lib/cursorBus";
 import { useMediaQuery, usePrefersReducedMotion } from "../lib/hooks";
 
 const LOCKABLE = 'a[href], button, input, textarea, select, summary, [role="button"], [data-lock]';
@@ -84,7 +83,6 @@ function ReticleInner() {
       y.set(py);
       opacity.set(1);
       aim(lockOn(e.target as Element | null));
-      cursorBus.emit(px, py);
     };
     const onScroll = () => aim(lockOn(document.elementFromPoint(px, py)));
     const onLeave = () => opacity.set(0);

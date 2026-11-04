@@ -1,5 +1,5 @@
 import { useMemo, type ChangeEvent } from "react";
-import { Panel } from "../components/panels/Panel";
+import { Panel } from "../components/Panel";
 import { figures } from "../data/figures";
 import type { Story } from "../data/myths";
 import { skiesTitle, stargazingNote } from "../data/skies";

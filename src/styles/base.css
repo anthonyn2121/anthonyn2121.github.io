@@ -420,11 +420,6 @@ main {
   gap: 8px;
 }
 
-.statusbar__about[aria-expanded="true"] {
-  color: var(--select);
-  border-color: var(--select);
-}
-
 @media (max-width: 1460px) {
   .readout--coords {
     display: none;
@@ -434,20 +429,6 @@ main {
 @media (max-width: 1270px) {
   .readout--clock {
     display: none;
-  }
-
-  .statusbar__about {
-    width: 38px;
-    padding: 0;
-  }
-
-  .statusbar__about-text {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
   }
 }
 

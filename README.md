@@ -1,35 +1,34 @@
-# Portfolio: ground control station
+# Portfolio: flight deck
 
-A personal portfolio styled as a UAS ground control station. The landing view is a
-dashboard with four panels:
+A personal portfolio styled as an aircraft carrier flight deck, drawn entirely in coloured
+ASCII (Three.js, rendered through a glyph pass and a tilt-shift blur). The landing view is a
+live miniature: deck crews work, a jet comes up the elevator and is shot off the bow every
+8 seconds, a helicopter circles, and the escort steams alongside.
 
-- **Operator**: name, role, key facts, resume and contact buttons
-- **Flight plan**: your career as waypoints on a moving map. On load, the aircraft flies the
-  route, changing silhouette from Group 1 to Group 5 as it goes, then loiters over your current role.
-- **Payload**: featured projects shown as a sensor feed
-- **Console**: a working command line (`help`, `missions`, `log`, `open 2`, `takeoff`, …),
-  with clickable shortcuts for visitors who'd rather not type
+- **Your projects are the aircraft.** Each featured project is parked in the row forward of
+  the island, tagged with its side number. Hover or tab to one for its tagline; click it and
+  it launches while its mission card opens. Jets (F-35Cs) taxi to the catapult, spread their
+  wings, launch, and trap back aboard when the card closes. A project marked as a quadcopter
+  lifts off its UAS pad and circles over the deck instead.
+- **The camera follows.** It tracks your launches off the bow and pans aft for recoveries,
+  pulling the tilt-shift focus onto the aircraft.
+- **A status strip** shows both catapults, recoveries, the UAS pad and what's airborne, with a
+  pause button for the motion.
 
-Visitors outside aerospace get help reading it. A note at the top explains what a ground
-control station is and links to the standard layout. They can dismiss it, the browser
-remembers that, and "About this layout" in the top bar brings it back. Each panel also has
-a plain-language label (Flight plan, *Career history*), and the console's `gcs` command
-explains the layout. Edit the note in `src/components/Briefing.tsx` and the labels in each
-panel's `plain` prop.
+Below the deck are plain, skimmable sections for recruiters: About, Experience, Projects
+(plus your other public GitHub repos), Platforms (Groups 1 to 5), and Contact.
 
-Below the dashboard are plain, skimmable sections for recruiters: About, Experience,
-Projects (plus your other public GitHub repos), Platforms (Groups 1 to 5), and Contact.
-
-There are two themes. Night is a GCS display; Day is a VFR sectional chart. The site
-follows the visitor's system setting until they pick one.
+There are two themes. Day is daylight flight ops; Night is moonlit, with deck edge lights and
+navigation lights. The site follows the visitor's system setting until they pick one. The
+page chrome follows glass-cockpit conventions in Night and a VFR sectional chart in Day.
 
 ### Above the skies
 
 A second page, at `/skies/`, about stargazing and the Greek and Roman myths behind the
-constellations. Visitors reach it from "Above the skies" in the top bar or footer, or by
-typing `lookup` in the console. Arriving that way, the view pitches up off the terrain, past
-the horizon, with a pitch ladder as on a flight display, until it looks straight up. Shared
-links and reloads skip the transition, and so does any key or click.
+constellations. Visitors reach it from "Above the skies" in the top bar or footer. Arriving
+that way, the view pitches up off the terrain, past the horizon, with a pitch ladder as on a
+flight display, until it looks straight up. Shared links and reloads skip the transition, and
+so does any key or click.
 
 The page is a planetarium-style sky chart you can drag and zoom. It opens on the sky directly
 over your `location` at the current time, with the horizon and the compass points marked.
@@ -47,13 +46,13 @@ Almost everything lives in **`src/data/profile.ts`**:
 
 | Field | What it controls |
 | --- | --- |
-| `name`, `role`, `summary`, `callsign` | Operator panel, top bar, page title |
-| `location` | "Based in", plus the cursor coordinate readout in the top bar |
-| `availability`, `clearance`, `yearsExperience` | Operator data block and status light |
-| `email`, `links`, `githubUsername` | Contact buttons, console `contact`, GitHub repo list |
-| `experience` | Map waypoints (oldest first) and the Experience timeline |
-| `projects` | Payload carousel, console `missions`, Projects section |
-| `platforms`, `skills` | Platforms section and console `platforms` |
+| `name`, `role`, `summary`, `callsign` | Hero, top bar, page title; the digits in `callsign` are the carrier's hull number |
+| `location` | Hero eyebrow and "Based in" |
+| `availability`, `yearsExperience` | Status light in the top bar, Contact, Experience intro |
+| `email`, `links`, `githubUsername` | Contact buttons and the GitHub repo list |
+| `experience` | The Experience timeline |
+| `projects` | The first four are the aircraft on deck (set `vehicle: "quadcopter"` for a Group 1 quadcopter); all appear in the Projects section |
+| `platforms`, `skills` | Platforms section |
 | `about` | About section paragraphs |
 
 Other files:
@@ -61,8 +60,7 @@ Other files:
 - **Resume:** replace `public/resume.pdf` with your own (the current one is a placeholder).
 - **Headshot (optional):** add e.g. `public/me.jpg` and set `photo: "/me.jpg"`.
 - **Project screenshots (optional):** add e.g. `public/projects/mavdeck.png` and set
-  `image: "/projects/mavdeck.png"` on the project. Without an image, the payload shows
-  generated terrain.
+  `image: "/projects/mavdeck.png"` on the project.
 - **Search/social description:** edit the `<title>` and `<meta name="description">` in `index.html`
   (and `skies/index.html` for the sky page).
 
@@ -120,10 +118,10 @@ If you deploy to a project repo instead (`<your-username>.github.io/portfolio`),
 - **Colors and type:** the tokens at the top of `src/styles/base.css`. The palette follows
   glass-cockpit conventions: magenta for the active route, cyan for selected or interactive
   elements, and green/amber/red for status lights only.
-- **Console commands:** the `commands` array in `src/components/panels/ConsolePanel.tsx`.
-  Each command has a name, a description (shown by `help`), and a `run` function.
-- **UAS group definitions** (the weight, altitude, and speed limits, plus the map's telemetry
-  values): `src/lib/uas.ts`.
+- **The flight deck:** the scene lives in `src/carrier/scene/` (carrier, F-35Cs, quadcopter, sea,
+  flight ops, and the glyph and tilt-shift passes); the overlay, tags and mission cards are in
+  `src/carrier/CarrierApp.tsx`, styled in `src/styles/carrier.css`.
+- **UAS group definitions** (the weight, altitude, and speed limits): `src/lib/uas.ts`.
 - **Sky chart colors:** the `--sky-*` tokens in `src/styles/base.css`, one set per theme. They
   are plain color values because the canvas reads them directly.
 
@@ -133,9 +131,13 @@ If you deploy to a project repo instead (`<your-username>.github.io/portfolio`),
 - The GitHub repo list uses the public API, which allows 60 requests per hour per visitor;
   results are cached for 30 minutes. Forks, archived repos, featured projects, and this site's
   own repo are left out.
-- Motion respects `prefers-reduced-motion`. With it on, the map shows the finished route, the
-  background stops drifting, and the custom cursor is off. The custom cursor only appears with a mouse.
-  On the sky page, it also skips the pitch-up, and the chart jumps instead of flying.
+- Motion respects `prefers-reduced-motion`. With it on, the flight deck shows one still frame
+  and opening a project just opens its card; the custom cursor is off. The custom cursor only
+  appears with a mouse. On the sky page, it also skips the pitch-up, and the chart jumps
+  instead of flying.
+- The flight deck needs WebGL 2. Without it, the hero shows a plain list of the projects. If
+  frames run slow, the scene steps down its own render quality; in dev, `/?fps` shows the
+  frame rate and quality level.
 - The myths are set in [EB Garamond](https://github.com/octaviopardo/EBGaramond12), a revival
   of the type of Bayer's era, self-hosted via Fontsource.
 - Sky data comes from [d3-celestial](https://github.com/ofrohn/d3-celestial) by Olaf Frohn

@@ -8,7 +8,6 @@ import "@fontsource/eb-garamond/400.css";
 import "@fontsource/eb-garamond/400-italic.css";
 import "@fontsource/eb-garamond/600.css";
 import "../styles/base.css";
-import "../styles/dashboard.css";
 import "../styles/skies.css";
 import { takePitchUp } from "../lib/pages";
 import { SkiesApp } from "./SkiesApp";

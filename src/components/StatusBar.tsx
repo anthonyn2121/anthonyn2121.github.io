@@ -1,7 +1,5 @@
 import { useEffect, useRef, type MouseEvent, type ReactNode } from "react";
 import { profile } from "../data/profile";
-import { useBriefing } from "../lib/briefing";
-import { cursorBus } from "../lib/cursorBus";
 import { useTheme } from "../lib/theme";
 
 export const SECTIONS = [
@@ -104,53 +102,4 @@ export function Clock({ format }: { format: (now: Date) => string }) {
     return () => window.clearInterval(id);
   }, [format]);
   return <span className="readout readout--clock" ref={ref} aria-hidden="true" />;
-}
-
-const fmtCoord = (v: number, pos: string, neg: string) => `${Math.abs(v).toFixed(4)}° ${v >= 0 ? pos : neg}`;
-const utc = (now: Date) => now.toISOString().slice(11, 19) + "Z";
-
-/** The main page's readouts: the pointer as coordinates around your home location, and UTC. */
-export function GroundReadouts() {
-  const coordRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const { lat, lon } = profile.location;
-    const write = (la: number, lo: number) => {
-      if (coordRef.current) coordRef.current.textContent = `${fmtCoord(la, "N", "S")}  ${fmtCoord(lo, "E", "W")}`;
-    };
-    write(lat, lon);
-    // Map the pointer to a small box around your home location, like a map cursor readout.
-    return cursorBus.subscribe((x, y) => {
-      write(lat + (0.5 - y / window.innerHeight) * 0.06, lon + (x / window.innerWidth - 0.5) * 0.1);
-    });
-  }, []);
-
-  return (
-    <>
-      <span className="readout readout--coords" ref={coordRef} aria-hidden="true" />
-      <Clock format={utc} />
-    </>
-  );
-}
-
-/** Shows or hides the note that explains the GCS layout. */
-export function BriefingToggle() {
-  const briefing = useBriefing();
-  return (
-    <button
-      type="button"
-      id="briefing-toggle"
-      className="btn btn--ghost statusbar__about"
-      onClick={briefing.open ? briefing.dismiss : briefing.show}
-      aria-expanded={briefing.open}
-      aria-controls="briefing"
-      title="What this layout is"
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="9.5" />
-        <path d="M12 11v6M12 7.5v.01" />
-      </svg>
-      <span className="statusbar__about-text">About this layout</span>
-    </button>
-  );
 }

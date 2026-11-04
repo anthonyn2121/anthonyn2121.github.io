@@ -1,7 +1,7 @@
 /**
  * ─────────────────────────────────────────────────────────────────────────
  *  All site content lives in this file. Replace the placeholders with your
- *  own details. Every field is used somewhere on the page or in the console.
+ *  own details. Every field is used somewhere on the page.
  *
  *  Keep descriptions public-release safe: no ITAR-controlled technical data,
  *  CUI, program names under NDA, or anything your employer hasn't cleared.
@@ -16,11 +16,9 @@ export interface ExternalLink {
 }
 
 export interface ExperienceEntry {
-  /** Short id used for the map waypoint and the page anchor, e.g. "WP3". */
+  /** Short id used for the page anchor, e.g. "WP3". */
   id: string;
   role: string;
-  /** A shorter role title for the map label when space is tight. */
-  shortRole: string;
   org: string;
   location: string;
   start: string;
@@ -46,6 +44,11 @@ export interface Project {
   demo?: string;
   /** Optional screenshot in /public, e.g. "/projects/mavdeck.png". */
   image?: string;
+  /**
+   * What represents this project on the flight-deck page (/carrier/). Defaults to a jet;
+   * "quadcopter" parks a Group 1 quadcopter on a UAS pad instead.
+   */
+  vehicle?: "quadcopter";
 }
 
 export interface PlatformWork {
@@ -64,7 +67,6 @@ export interface Profile {
   location: { label: string; lat: number; lon: number };
   availability: { open: boolean; short: string; detail: string };
   yearsExperience: number;
-  clearance: string;
   email: string;
   githubUsername: string;
   resumeUrl: string;
@@ -99,7 +101,6 @@ export const profile: Profile = {
   },
 
   yearsExperience: 7,
-  clearance: "Active, level on request",
 
   email: "you@example.com",
   /** Your GitHub username. Used to list your public repositories. */
@@ -124,7 +125,6 @@ export const profile: Profile = {
     {
       id: "WP1",
       role: "Undergraduate researcher",
-      shortRole: "Researcher",
       org: "University UAS Lab",
       location: "Columbus, OH",
       start: "2017",
@@ -139,7 +139,6 @@ export const profile: Profile = {
     {
       id: "WP2",
       role: "Flight test engineer",
-      shortRole: "Flight test",
       org: "Acme Unmanned Systems",
       location: "Pendleton, OR",
       start: "2018",
@@ -155,7 +154,6 @@ export const profile: Profile = {
     {
       id: "WP3",
       role: "Systems integration engineer",
-      shortRole: "Integration",
       org: "Example Aerosystems",
       location: "San Diego, CA",
       start: "2020",
@@ -170,7 +168,6 @@ export const profile: Profile = {
     {
       id: "WP4",
       role: "Senior autonomy engineer",
-      shortRole: "Autonomy",
       org: "Placeholder Aerospace",
       location: "Dayton, OH",
       start: "2023",
@@ -197,6 +194,7 @@ export const profile: Profile = {
       ],
       tech: ["Python", "PX4", "Gazebo", "ROS 2", "GitHub Actions"],
       groups: [1, 2],
+      vehicle: "quadcopter",
       repo: "https://github.com/your-github-username/sitl-sweep",
     },
     {

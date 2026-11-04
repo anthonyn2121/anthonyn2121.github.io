@@ -1,0 +1,493 @@
+/* ─── Flight deck home (exploration) ──────────────────────────────────── */
+
+.carrier-hero {
+  position: relative;
+  isolation: isolate;
+  height: calc(100svh - var(--bar-h));
+  min-height: 600px;
+  overflow: hidden;
+  background: #07121b;
+}
+
+[data-theme="day"] .carrier-hero {
+  background: #0b2a44;
+}
+
+.carrier-hero__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The diorama's top and bottom bands are already blurred; a scrim there carries the text. */
+.carrier-hero__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 60% at 0% 100%, color-mix(in srgb, var(--bg) 70%, transparent) 0%, transparent 70%),
+    linear-gradient(0deg, color-mix(in srgb, var(--bg) 55%, transparent) 0%, transparent 18%);
+}
+
+/* Text sits bottom-left, over the blurred starboard sea; the deck park and the cats keep the top and right. */
+.carrier-hero__intro {
+  position: absolute;
+  bottom: 84px;
+  left: 28px;
+  z-index: 2;
+  max-width: 460px;
+  padding: 18px 22px 16px;
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+  backdrop-filter: blur(6px);
+}
+
+/* The mission card takes the intro's place, so the deck to the right stays clear for the launch. */
+.carrier-hero__intro[hidden] {
+  display: none;
+}
+
+.carrier-hero__eyebrow {
+  margin: 0 0 10px;
+  font: 700 var(--fs-12) / 1.4 var(--font-mono);
+  color: var(--select);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.carrier-hero__name {
+  margin: 0;
+  font-size: var(--fs-48);
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.carrier-hero__role {
+  margin: 6px 0 0;
+  font-size: var(--fs-21);
+  color: var(--ink);
+}
+
+.carrier-hero__summary {
+  margin: 14px 0 0;
+  font-size: var(--fs-16);
+  line-height: 1.5;
+  color: var(--ink-dim);
+}
+
+.carrier-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.carrier-hero__hint {
+  margin: 12px 0 0;
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+}
+
+.carrier-hero__cue {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  z-index: 2;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: var(--fs-12);
+  color: var(--ink-dim);
+  text-decoration: none;
+  transform: translateX(-50%);
+}
+
+.carrier-hero__cue:hover {
+  color: var(--select);
+}
+
+.carrier-hero__cue svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* ─── Jet tags: a chip on a stem above each project jet ───────────────── */
+
+.deck-tags {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.deck-tag {
+  --jet: 60px;
+  --ring-h: max(calc(var(--jet) * 0.62), 30px);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  will-change: transform;
+}
+
+/* The tag being read sits above its neighbours. */
+.deck-tag:hover,
+.deck-tag:focus-within {
+  z-index: 1;
+}
+
+.deck-tag[data-hidden="true"] {
+  visibility: hidden;
+}
+
+.deck-tag__btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  width: max-content;
+  transform: translate(-50%, calc(-100% + var(--ring-h) / 2));
+}
+
+.deck-tag__chip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  align-items: baseline;
+  max-width: 250px;
+  padding: 5px 9px;
+  font: 700 var(--fs-12) / 1.3 var(--font-mono);
+  text-align: left;
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-ctl);
+  transition: border-color 0.15s;
+}
+
+.deck-tag__modex,
+.deck-tag__name {
+  white-space: nowrap;
+}
+
+.deck-tag__modex {
+  color: var(--select);
+}
+
+.deck-tag__more {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  font: 400 var(--fs-12) / 1.4 var(--font-sans);
+  color: var(--ink-dim);
+}
+
+.deck-tag__id {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* A crisp top view of the type, so the jet reads even where the ASCII is rough. */
+.deck-tag__plan {
+  flex: none;
+  width: 38px;
+  height: 44px;
+  fill: color-mix(in srgb, var(--select) 22%, transparent);
+  stroke: var(--select);
+  stroke-width: 0.28;
+  stroke-linejoin: round;
+}
+
+.deck-tag__spec {
+  display: block;
+  font: var(--fs-12) / 1.3 var(--font-mono);
+  color: var(--ink-faint);
+}
+
+.deck-tag__type {
+  display: block;
+  font: 700 var(--fs-12) / 1.3 var(--font-mono);
+  color: var(--ink);
+}
+
+.deck-tag__action {
+  font-weight: 700;
+  color: var(--select);
+}
+
+.deck-tag__stem {
+  width: 1px;
+  height: 16px;
+  background: var(--line-strong);
+}
+
+.deck-tag__ring {
+  width: max(var(--jet), 44px);
+  height: var(--ring-h);
+  border: 1px dashed transparent;
+  border-radius: 50%;
+  transition: border-color 0.15s;
+}
+
+.deck-tag__btn:hover .deck-tag__more,
+.deck-tag__btn:focus-visible .deck-tag__more {
+  display: flex;
+  width: 240px;
+}
+
+.deck-tag__btn:hover .deck-tag__chip,
+.deck-tag__btn:focus-visible .deck-tag__chip,
+.deck-tag[data-selected="true"] .deck-tag__chip {
+  border-color: var(--select);
+}
+
+.deck-tag__btn:hover .deck-tag__ring,
+.deck-tag__btn:focus-visible .deck-tag__ring,
+.deck-tag[data-selected="true"] .deck-tag__ring {
+  border-color: var(--select);
+}
+
+.deck-tag__btn:hover .deck-tag__stem,
+.deck-tag__btn:focus-visible .deck-tag__stem {
+  background: var(--select);
+}
+
+.deck-tag__btn:focus-visible {
+  outline: none;
+}
+
+/* A jet on the move drops its tag to a quiet label, so the chip doesn't chase it across the deck. */
+.deck-tag:not([data-state="parked"]) .deck-tag__name,
+.deck-tag:not([data-state="parked"]) .deck-tag__stem {
+  display: none;
+}
+
+/* Small screens and no WebGL: a plain list instead of tags on the jets. */
+.deck-list {
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin: 14px 0 0;
+  list-style: none;
+}
+
+.deck-list .btn {
+  min-height: 32px;
+  font-size: var(--fs-12);
+}
+
+.deck-list .btn[aria-pressed="true"] {
+  color: var(--select);
+  border-color: var(--select);
+}
+
+.deck-list__modex {
+  font-family: var(--font-mono);
+  color: var(--select);
+}
+
+/* ─── Deck status strip ───────────────────────────────────────────────── */
+
+.deck-status {
+  position: absolute;
+  bottom: 20px;
+  left: 36px;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 12px 6px 6px;
+  background: color-mix(in srgb, var(--panel) 85%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.deck-status svg {
+  margin: 0;
+}
+
+.deck-status__readouts {
+  display: flex;
+  gap: 18px;
+  margin: 0;
+  font: var(--fs-12) / 1.3 var(--font-mono);
+}
+
+.deck-status__readouts dt {
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.deck-status__readouts dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ─── Mission card ────────────────────────────────────────────────────── */
+
+.mission {
+  position: absolute;
+  bottom: 84px;
+  left: 28px;
+  z-index: 3;
+  width: min(440px, calc(100% - 56px));
+  max-height: calc(100% - 112px);
+  padding: 16px 20px 20px;
+  overflow: auto;
+  font-size: var(--fs-14);
+  line-height: 1.5;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--panel) 94%, transparent);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-panel);
+  box-shadow: 0 10px 40px rgb(0 0 0 / 0.35);
+}
+
+.mission:focus {
+  outline: none;
+}
+
+.mission__head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mission__status {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  font: 700 var(--fs-12) / 1 var(--font-mono);
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+.mission__name {
+  margin: 8px 0 0;
+  font-size: var(--fs-24);
+}
+
+.mission__tagline {
+  margin: 2px 0 12px;
+  color: var(--select);
+}
+
+.mission__highlights {
+  padding-left: 18px;
+  color: var(--ink-dim);
+}
+
+.mission__meta {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 14px;
+}
+
+.mission__meta dt {
+  font-size: var(--fs-12);
+  color: var(--ink-faint);
+}
+
+.mission__meta dd {
+  margin: 0;
+}
+
+.mission__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+.mission__recover {
+  width: 100%;
+}
+
+/* ─── Narrow screens and fallback ─────────────────────────────────────── */
+
+.carrier-hero--fallback {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 13px, color-mix(in srgb, var(--line) 40%, transparent) 13px 14px),
+    var(--bg);
+}
+
+.carrier-hero--fallback .deck-tags,
+.carrier-hero--fallback .carrier-hero__canvas {
+  display: none;
+}
+
+.carrier-hero--fallback .deck-list {
+  display: flex;
+}
+
+@media (max-width: 760px) {
+  .carrier-hero {
+    min-height: 640px;
+  }
+
+  .carrier-hero__intro {
+    top: 18px;
+    bottom: auto;
+    right: 18px;
+    left: 18px;
+  }
+
+  .carrier-hero__name {
+    font-size: var(--fs-36);
+  }
+
+  .carrier-hero__summary {
+    display: none;
+  }
+
+  .deck-tags,
+  .carrier-hero__cue {
+    display: none;
+  }
+
+  .deck-list {
+    display: flex;
+  }
+
+  .deck-status {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .deck-status__readouts {
+    gap: 12px;
+  }
+
+  .mission {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    width: auto;
+    max-height: 70%;
+  }
+}

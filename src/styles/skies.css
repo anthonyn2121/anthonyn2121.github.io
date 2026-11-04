@@ -640,3 +640,86 @@ html.skies-page body {
   border-radius: var(--r-ctl);
   transform: translateX(-50%);
 }
+
+/* ─── Panel frame ─────────────────────────────────────────────────────── */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  container-type: inline-size;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--panel) 94%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--r-panel);
+}
+
+.panel__bar {
+  display: flex;
+  flex: none;
+  gap: 10px;
+  align-items: center;
+  height: 36px;
+  padding: 0 12px;
+  background: var(--panel-bar);
+  border-bottom: 1px solid var(--line);
+}
+
+.panel__title {
+  font: 700 var(--fs-14) / 1 var(--font-sans);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* The plain-language name beside the title. */
+.panel__plain {
+  padding-left: 10px;
+  margin-left: 10px;
+  font-weight: 400;
+  color: var(--ink-dim);
+  border-left: 1px solid var(--line-strong);
+}
+
+.panel__meta {
+  margin-left: auto;
+  font: var(--fs-12) / 1 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+
+.panel__body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── Data block (the story card's facts) ─────────────────────────────── */
+
+.datablock {
+  border-top: 1px solid var(--line);
+}
+
+.datablock > div {
+  display: grid;
+  grid-template-columns: 7.5em minmax(0, 1fr);
+  gap: 12px;
+  padding: 5px 0;
+  font-size: var(--fs-14);
+  border-bottom: 1px solid var(--line);
+}
+
+.datablock dt {
+  color: var(--ink-dim);
+}
+
+.datablock dd {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.datablock .led {
+  margin-top: 0.5em;
+}

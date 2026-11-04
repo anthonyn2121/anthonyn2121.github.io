@@ -1,4 +1,4 @@
-import { Panel } from "../components/panels/Panel";
+import { Panel } from "../components/Panel";
 import type { Figure } from "../data/figures";
 import type { Story } from "../data/myths";
 import { profile } from "../data/profile";
